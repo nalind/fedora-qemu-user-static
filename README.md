@@ -23,14 +23,14 @@ TL;DR
 
 To turn on emulation:
 ```
-  docker run --rm --privileged nalind/fedora-qemu-user-static register
-  sudo podman run --rm --privileged nalind/fedora-qemu-user-static register
+  docker run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static register
+  sudo podman run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static register
 ```
 
 To turn off emulation:
 ```
-  docker run --rm --privileged nalind/fedora-qemu-user-static unregister
-  sudo podman run --rm --privileged nalind/fedora-qemu-user-static unregister
+  docker run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static unregister
+  sudo podman run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static unregister
 ```
 
 Known Limitations
