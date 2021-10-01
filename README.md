@@ -1,12 +1,15 @@
 fedora-qemu-user-static
 =======================
 
-Borrowing heavily from the docker.io/multiarch/qemu-user-static image and
+Borrowing heavily from the
+[docker.io/multiarch/qemu-user-static](https://hub.docker.com/r/multiarch/qemu-user-static)
+image and
 references at https://dbhi.github.io/qus/, this image is based on Fedora with
 its qemu-user-static package installed.  There are many variations on this
 theme, and this is one more.
 
-If your Linux distribution includes a `qemu-user-static` package, I recommend
+If your Linux distribution includes a `qemu-user-static` package, I
+enthusiastically recommend
 that you install it instead of attempting to use this image.  On Fedora, at
 least, the packaging does all of the right things automatically, and updates
 for the package are also provided by the distribution.
