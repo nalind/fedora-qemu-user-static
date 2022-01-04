@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fedora-qemu-user-static
+spec:
+  selector:
+    matchLabels:
+      name: fedora-qemu-user-static
+  template:
+    metadata:
+      labels:
+        name: fedora-qemu-user-static
+    spec:
+      volumes:
+      - name: hostbindir
+        hostPath:
+          path: /run/qemu-user-static
+      initContainers:
+      - name: qemu-user-static
+        image: ghcr.io/nalind/fedora-qemu-user-static
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        command:
+        - /entrypoint.sh
+        - register
+        env:
+        - name: BINDIR
+          value: /usr/local/bin
+        - name: CHCON
+          value: -t bin_t
+        volumeMounts:
+        - name: hostbindir
+          mountPath: /usr/local/bin
+      containers:
+      - image: k8s.gcr.io/pause:3.2
+        name: pause
+      nodeSelector:
+        kubernetes.io/os: linux
