@@ -46,5 +46,22 @@ allowed.  It _can_ work if the container which needs to be run under emulation
 is started without SELinux confinement using the `--security-opt label=disable`
 option, but it's a tradeoff that's best avoided if possible.
 
+Alternatively, the container can be told, though environment variables, to copy
+its interpreters to a directory at which we mount a volume, and to relabel the
+interpreters so that SELinux policy will allow them to run binaries in
+containers.
+
+To turn on emulation using that workaround:
+```
+  docker run --rm --privileged -v $(sudo mktemp -d -p /run -t qemu-user-static-XXXXXX):/usr/local/bin -e BINDIR=/usr/local/bin -e CHCON="-t bin_t" ghcr.io/nalind/fedora-qemu-user-static register
+  sudo podman run --rm --privileged -v /usr/local/bin -e BINDIR=/usr/local/bin -e CHCON="-t bin_t" ghcr.io/nalind/fedora-qemu-user-static register
+```
+
+To turn off emulation:
+```
+  docker run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static unregister
+  sudo podman run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static unregister
+```
+
 We're heavily dependent on the quality of the emulation.  It should go without
 saying, but if something breaks, you get to keep all of the pieces.
