@@ -23,10 +23,10 @@ register() {
 		if test -n "${BINDIR}" ; then
 			# optionally copy this binary to a volume
 			install -v "${binary}" "${BINDIR}/"
-			if test -n "${CHCON}" ; then
-				# optionally try to relabel the binary in the volume
-				chcon -v ${CHCON} "${BINDIR}/${binary##*/}" || :
-			fi
+		fi
+		if test -n "${CHCON}" ; then
+			# optionally try to relabel the binary
+			chcon -v ${CHCON} "${BINDIR:-/usr/bin}/${binary##*/}" || :
 		fi
 		sed "s#/usr/bin#${BINDIR:-/usr/bin}#g" ${binfmt} > /proc/sys/fs/binfmt_misc/register && echo ok
 	done

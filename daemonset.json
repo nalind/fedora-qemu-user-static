@@ -12,7 +12,7 @@ spec:
         name: fedora-qemu-user-static
     spec:
       volumes:
-      - name: hostbindir
+      - name: hostbindir # a directory on the host which won't persist
         hostPath:
           path: /run/qemu-user-static
       initContainers:
@@ -25,9 +25,9 @@ spec:
         - /entrypoint.sh
         - register
         env:
-        - name: BINDIR
+        - name: BINDIR # entrypoint.sh will copy interpreters to this directory
           value: /usr/local/bin
-        - name: CHCON
+        - name: CHCON # entrypoint.sh will run "chcon" with this as its argument for each interpreter after copying
           value: -t bin_t
         volumeMounts:
         - name: hostbindir
