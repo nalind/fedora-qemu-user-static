@@ -14,9 +14,9 @@ spec:
       volumes:
       - name: hostbindir # a directory on the host which won't persist
         hostPath:
-          path: /run/qemu-user-static
+          path: /run/fedora-qemu-user-static
       initContainers:
-      - name: qemu-user-static
+      - name: fedora-qemu-user-static
         image: ghcr.io/nalind/fedora-qemu-user-static
         imagePullPolicy: IfNotPresent
         securityContext:
@@ -24,14 +24,14 @@ spec:
         command:
         - /entrypoint.sh
         - register
+        volumeMounts:
+        - name: hostbindir # mount that non-persistent directory into the container so that we can copy interpreters into it
+          mountPath: /usr/local/bin
         env:
-        - name: BINDIR # entrypoint.sh will copy interpreters to this directory
+        - name: BINDIR # entrypoint.sh will copy interpreters to this directory in the container
           value: /usr/local/bin
         - name: CHCON # entrypoint.sh will run "chcon" with this as its argument for each interpreter after copying
           value: -t bin_t
-        volumeMounts:
-        - name: hostbindir
-          mountPath: /usr/local/bin
       containers:
       - image: k8s.gcr.io/pause:3.2
         name: pause
