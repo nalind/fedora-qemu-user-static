@@ -39,17 +39,12 @@ To turn off emulation:
 Known Limitations
 =================
 
-Attempting to use emulators from one container to run binaries in another
-container is a case of letting one container mess with another.  If your system
-is using SELinux in enforcing mode, this is almost certainly going to not be
-allowed.  It _can_ work if the container which needs to be run under emulation
-is started without SELinux confinement using the `--security-opt label=disable`
-option, but it's a tradeoff that's best avoided if possible.
+SELinux policy would normally not allow binaries in one container to access
+binaries in another container, so an additional workaround is required.
 
-Alternatively, the container can be told, though environment variables, to copy
-its interpreters to a directory at which we mount a volume, and to relabel the
-interpreters so that SELinux policy will allow them to run binaries in
-containers.
+A workaround that has worked for me is to copy the interpreters to a mounted
+volume, relabel them, and register them from there.  SELinux policy will then
+allow them to run binaries in containers.
 
 To turn on emulation using that workaround:
 ```
