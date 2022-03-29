@@ -1,5 +1,5 @@
-FROM registry.fedoraproject.org/fedora
-RUN dnf -y install qemu-user-static && dnf clean all
+FROM registry.fedoraproject.org/fedora-minimal
+RUN microdnf -y install qemu-user-static /usr/bin/mount /usr/bin/chcon && microdnf clean all
 COPY LICENSE entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 ARG IMAGE=ghcr.io/nalind/fedora-qemu-user-static
