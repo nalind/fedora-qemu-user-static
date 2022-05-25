@@ -28,16 +28,18 @@ To turn on emulation:
 ```
   docker run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static register
   sudo podman run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static register
+  podman machine ssh sudo podman run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static register
 ```
 
 To turn off emulation:
 ```
   docker run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static unregister
   sudo podman run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static unregister
+  podman machine ssh sudo podman run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static unregister
 ```
 
-Known Limitations
-=================
+SELinux
+=======
 
 SELinux policy would normally not allow binaries in one container to access
 binaries in another container, so an additional workaround is required.
@@ -50,12 +52,14 @@ To turn on emulation using that workaround:
 ```
   docker run --rm --privileged -v $(sudo mktemp -d -p /run -t qemu-user-static-XXXXXX):/usr/local/bin -e BINDIR=/usr/local/bin -e CHCON="-t bin_t" ghcr.io/nalind/fedora-qemu-user-static register
   sudo podman run --rm --privileged -v /usr/local/bin -e BINDIR=/usr/local/bin -e CHCON="-t bin_t" ghcr.io/nalind/fedora-qemu-user-static register
+  podman machine ssh sudo podman run --rm --privileged -v /usr/local/bin -e BINDIR=/usr/local/bin -e 'CHCON="-t bin_t"' ghcr.io/nalind/fedora-qemu-user-static register
 ```
 
 To turn off emulation:
 ```
   docker run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static unregister
   sudo podman run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static unregister
+  podman machine ssh sudo podman run --rm --privileged ghcr.io/nalind/fedora-qemu-user-static unregister
 ```
 
 We're heavily dependent on the quality of the emulation.  It should go without
