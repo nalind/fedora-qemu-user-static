@@ -1,0 +1,44 @@
+name: Periodic Build and Push
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron:  '0 0 * * 0'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE: ghcr.io/${{ github.actor }}/fedora-qemu-user-static
+  SOURCE: https://github.com/${{ github.actor }}/fedora-qemu-user-static
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - run: sudo apt-get -y install podman buildah
+
+    - uses: redhat-actions/podman-login@v1
+      with:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: ${{ env.REGISTRY }}
+
+    - run: sudo podman run --net=host --rm --privileged ${{ env.IMAGE }} register
+
+#    - uses: redhat-actions/buildah-build@v2
+#      with:
+#        containerfiles: Dockerfile
+#        context: .
+#        image: localhost/nonce
+#        extra-args: --all-platforms --manifest localhost/doge-image
+
+    - run: buildah version
+
+    - run: buildah bud --build-arg FEDORARELEASE=36 --build-arg IMAGE=${{ env.IMAGE }} --build-arg SOURCE=${{ env.SOURCE }} --platform linux/arm64,linux/amd64,linux/ppc64le,linux/s390x --manifest ${{ env.IMAGE }} .
+
+    - run: buildah manifest push --format v2s2 --all ${{ env.IMAGE }} docker://${{ env.IMAGE }}:$(TZ=UTC date +%Y-%m-%d)
+
+    - run: buildah manifest push --format v2s2 --all ${{ env.IMAGE }} docker://${{ env.IMAGE }}
