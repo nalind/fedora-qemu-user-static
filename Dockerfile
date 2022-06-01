@@ -7,4 +7,4 @@ ARG IMAGE=ghcr.io/nalind/fedora-qemu-user-static
 ENV IMAGE=${IMAGE}
 ARG SOURCE=https://github.com/nalind/fedora-qemu-user-static
 LABEL org.opencontainers.image.source=${SOURCE}
-LABEL org.opencontainers.image.description="When run with privileges, registers Fedora ${FEDORARELEASE}'s qemu-user-static package's interpreters with the host's binfmt_misc kernel module."
+LABEL org.opencontainers.image.description="When run with privileges, registers Fedora's qemu-user-static package's interpreters with the host's binfmt_misc kernel module."
