@@ -38,7 +38,9 @@ jobs:
 
     - run: buildah version
 
-    - run: buildah bud --build-arg FEDORARELEASE=36 --build-arg IMAGE=${{ env.IMAGE }} --build-arg SOURCE=${{ env.SOURCE }} --platform linux/arm64,linux/amd64,linux/ppc64le,linux/s390x --manifest ${{ env.IMAGE }} .
+    - run: echo FEDORARELEASE=`curl -q https://endoflife.date/api/fedora.json | jq -r '.[0].latest'` >> ${GITHUB_ENV}
+
+    - run: buildah bud --build-arg FEDORARELEASE=${FEDORARELEASE:-latest} --build-arg IMAGE=${{ env.IMAGE }} --build-arg SOURCE=${{ env.SOURCE }} --platform linux/arm64,linux/amd64,linux/ppc64le,linux/s390x --manifest ${{ env.IMAGE }} .
 
     - run: buildah manifest push --format v2s2 --all ${{ env.IMAGE }} docker://${{ env.IMAGE }}:$(TZ=UTC date +%Y-%m-%d)
 
