@@ -1,6 +1,6 @@
 ARG FEDORARELEASE=36
 FROM registry.fedoraproject.org/fedora-minimal:${FEDORARELEASE}
-RUN microdnf -y install --setopt install_weak_deps=0 qemu-user-static /usr/bin/mount /usr/bin/chcon && microdnf clean all
+RUN microdnf -y distro-sync && microdnf -y install --setopt install_weak_deps=0 qemu-user-static /usr/bin/mount /usr/bin/chcon && microdnf clean all
 COPY LICENSE entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 ARG IMAGE=ghcr.io/nalind/fedora-qemu-user-static
