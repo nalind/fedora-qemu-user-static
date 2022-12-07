@@ -3,7 +3,8 @@ fedora-qemu-user-static
 
 Borrowing heavily from the
 [docker.io/multiarch/qemu-user-static](https://hub.docker.com/r/multiarch/qemu-user-static)
-image and
+and [tonistiigi/binfmt](https://hub.docker.com/r/tonistiigi/binfmt)
+images and
 references at https://dbhi.github.io/qus/, this image is based on Fedora with
 its qemu-user-static package installed.  There are many variations on this
 theme, and this is one more.
