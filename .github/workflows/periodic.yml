@@ -21,7 +21,7 @@ jobs:
 
     - run: sudo apt-get -y install podman buildah
 
-    - uses: redhat-actions/podman-login@v1.4
+    - uses: redhat-actions/podman-login@v1.5
       with:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
