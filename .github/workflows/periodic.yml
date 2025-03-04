@@ -9,8 +9,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE: ghcr.io/${{ github.actor }}/fedora-qemu-user-static
-  SOURCE: https://github.com/${{ github.actor }}/fedora-qemu-user-static
+  IMAGE: ghcr.io/${{ github.repository }}
+  SOURCE: https://github.com/${{ github.repository }}
 
 jobs:
   build-and-push:

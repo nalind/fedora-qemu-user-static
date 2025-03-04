@@ -1,4 +1,4 @@
-ARG FEDORARELEASE=39
+ARG FEDORARELEASE=41
 FROM registry.fedoraproject.org/fedora:${FEDORARELEASE}
 RUN dnf -y distro-sync && dnf -y install --setopt install_weak_deps=0 qemu-user-static /usr/bin/mount /usr/bin/chcon && dnf clean all
 COPY LICENSE entrypoint.sh /
